@@ -1,0 +1,983 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="games\supported\AirRaid.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="controllers\ale_controller.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="environment\ale_state.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Alien.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Amidar.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Assault.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Asterix.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Asteroids.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\AtariVox.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Atlantis.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\BankHeist.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\BattleZone.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\BeamRider.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Berzerk.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Booster.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Bowling.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Boxing.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Breakout.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Carnival.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Cart.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Cart2K.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Cart3E.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Cart3F.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Cart4A50.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Cart4K.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Cart0840.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartAR.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartCV.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartDPC.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartE0.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartE7.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartF4.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartF4SC.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartF6.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartF6SC.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartF8.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartF8SC.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartFASC.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartFE.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartMB.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartMC.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\CartUA.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Centipede.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\ChopperCommand.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Console.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="common\Constants.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Control.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\CrazyClimber.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\rsynth\darray.c">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="common\Defaults.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Defender.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\DemonAttack.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Deserializer.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\m6502\src\Device.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="common\display_screen.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\DoubleDunk.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Driving.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\rsynth\elements.c">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\ElevatorAction.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Enduro.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Event.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="common\export_screen.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="controllers\fifo_controller.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\FishingDerby.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Freeway.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Frostbite.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\FSNode.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="os_dependent\FSNodePOSIX.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="os_dependent\FSNodeWin32.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Gopher.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Gravitar.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Hero.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\rsynth\holmes.c">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\IceHockey.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="controllers\internal_controller.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\JamesBond.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\JourneyEscape.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Joystick.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Kangaroo.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Keyboard.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Krull.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\KungFuMaster.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\m6502\src\M6502.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\m6502\src\M6502Hi.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\m6502\src\M6502Low.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\M6532.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\MD5.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\MediaSrc.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\MontezumaRevenge.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\MsPacman.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\NameThisGame.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\m6502\src\NullDev.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\rsynth\opsynth.c">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\OSystem.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="os_dependent\OSystemUNIX.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="os_dependent\OSystemWin32.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Paddles.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Phoenix.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\rsynth\phones.c">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="environment\phosphor_blend.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\rsynth\phtoelm.c">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Pitfall.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="agents\PlayerAgent.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Pong.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Pooyan.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\PrivateEye.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Props.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\PropsSet.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\QBert.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Random.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="agents\RandomAgent.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="common\RectList.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\RiverRaid.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="controllers\rlglue_controller.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\RoadRunner.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\RoboTank.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\Roms.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\RomSettings.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\RomUtils.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="agents\SDLKeyboardAgent.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Seaquest.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Serializer.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Settings.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="os_dependent\SettingsUNIX.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="os_dependent\SettingsWin32.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="agents\SingleActionAgent.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Skiing.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Solaris.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="common\SoundNull.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="common\SoundSDL.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\SpaceInvaders.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\SpeakJet.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\StarGunner.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="environment\stella_environment.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\Switches.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\m6502\src\System.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Tennis.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\TIA.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\TIASnd.cxx">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\TimePilot.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\rsynth\trie.c">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Tutankham.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="emucore\unzip.c">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\UpNDown.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Venture.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\VideoPinball.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\WizardOfWor.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\YarsRevenge.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="games\supported\Zaxxon.cpp">
+      <Filter>ALE</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\EasyBMP.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="rl_main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="games\supported\AirRaid.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="controllers\ale_controller.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="environment\ale_ram.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="environment\ale_screen.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="environment\ale_state.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Alien.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Amidar.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Array.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Assault.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Asterix.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Asteroids.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\AtariVox.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Atlantis.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\BankHeist.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\BattleZone.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\BeamRider.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Berzerk.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Booster.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Bowling.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Boxing.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Breakout.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\m6502\src\bspf\src\bspf.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Carnival.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Cart.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Cart2K.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Cart3E.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Cart3F.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Cart4A50.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Cart4K.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Cart0840.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartAR.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartCV.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartDPC.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartE0.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartE7.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartF4.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartF4SC.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartF6.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartF6SC.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartF8.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartF8SC.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartFASC.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartFE.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartMB.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartMC.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\CartUA.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Centipede.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\ChopperCommand.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\rsynth\config.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Console.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Constants.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Control.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\CrazyClimber.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\rsynth\darray.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Defaults.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Defender.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\DefProps.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\DemonAttack.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Deserializer.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\m6502\src\Device.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="common\display_screen.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\DoubleDunk.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Driving.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\ElevatorAction.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Enduro.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Event.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="common\export_screen.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="controllers\fifo_controller.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\FishingDerby.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Freeway.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Frostbite.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\FSNode.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Gopher.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Gravitar.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="common\GuiUtils.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Hero.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\IceHockey.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="controllers\internal_controller.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\JamesBond.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\JourneyEscape.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Joystick.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Kangaroo.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Keyboard.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Krull.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\KungFuMaster.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\m6502\src\M6502.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\m6502\src\M6502Hi.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\m6502\src\M6502Low.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\M6532.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\MD5.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\MediaSrc.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="common\misc_tools.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\MontezumaRevenge.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\MsPacman.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\NameThisGame.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\m6502\src\NullDev.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\OSystem.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="os_dependent\OSystemUNIX.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="os_dependent\OSystemWin32.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Paddles.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\rsynth\phfeat.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Phoenix.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\rsynth\phones.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="environment\phosphor_blend.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\rsynth\phtoelm.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Pitfall.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="agents\PlayerAgent.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Pong.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Pooyan.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\PrivateEye.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Props.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\PropsSet.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\QBert.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Random.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="common\random_tools.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="agents\RandomAgent.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="common\RectList.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\RiverRaid.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="controllers\rlglue_controller.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\RoadRunner.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\RoboTank.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\Roms.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\RomSettings.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\RomUtils.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\rsynth\rsynth.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="agents\SDLKeyboardAgent.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Seaquest.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Serializer.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Settings.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="os_dependent\SettingsUNIX.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="os_dependent\SettingsWin32.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="agents\SingleActionAgent.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Skiing.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Solaris.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Sound.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="common\SoundNull.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="common\SoundSDL.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\SpaceInvaders.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\SpeakJet.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\StarGunner.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="environment\stella_environment.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\Switches.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\m6502\src\System.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Tennis.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\TIA.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\TIASnd.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\TimePilot.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\rsynth\trie.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Tutankham.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\unzip.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\UpNDown.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="emucore\rsynth\useconfig.h">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Venture.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Version.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="common\VideoModeList.hxx">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\VideoPinball.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\WizardOfWor.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\YarsRevenge.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="games\supported\Zaxxon.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="DCNN.h" />
+    <ClInclude Include="RL.h" />
+    <ClInclude Include="utils\EasyBMP.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\EasyBMP_BMP.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\EasyBMP_DataStructures.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\EasyBMP_VariousBMPutilities.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\image.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\PerfVar.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\utils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ale_interface.hpp">
+      <Filter>ALE</Filter>
+    </ClInclude>
+    <ClInclude Include="mnist.h" />
+    <ClInclude Include="Agent_DQN.h" />
+    <ClInclude Include="ALE.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="emucore\rsynth\Elements.def">
+      <Filter>ALE</Filter>
+    </None>
+    <None Include="emucore\rsynth\phones.def">
+      <Filter>ALE</Filter>
+    </None>
+    <None Include="emucore\rsynth\phtoelm.def">
+      <Filter>ALE</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ALE">
+      <UniqueIdentifier>{7a6592c6-94e8-421f-85db-923d3a013ca7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{c05249f1-aaa2-40b5-8f1d-d5cf97d7663e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

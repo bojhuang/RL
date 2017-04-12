@@ -68,7 +68,7 @@
 void ale_main()
 {
     // create the agent
-    static const int50 batch_size = 16; //32;
+    static const int50 batch_size = 32;
     int50 num_parallel_learner = 16;
     char* filename_weight = NULL;
 	std::vector<DCNN_CONFIG> config;

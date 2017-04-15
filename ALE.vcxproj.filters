@@ -960,6 +960,7 @@
     <ClInclude Include="mnist.h" />
     <ClInclude Include="Agent_DQN.h" />
     <ClInclude Include="ALE.h" />
+    <ClInclude Include="tic_tac_toe.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="emucore\rsynth\Elements.def">

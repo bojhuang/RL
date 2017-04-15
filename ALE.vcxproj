@@ -471,6 +471,7 @@
     <ClInclude Include="os_dependent\SettingsUNIX.hxx" />
     <ClInclude Include="os_dependent\SettingsWin32.hxx" />
     <ClInclude Include="RL.h" />
+    <ClInclude Include="tic_tac_toe.h" />
     <ClInclude Include="utils\EasyBMP.h" />
     <ClInclude Include="utils\EasyBMP_BMP.h" />
     <ClInclude Include="utils\EasyBMP_DataStructures.h" />

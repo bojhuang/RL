@@ -14,7 +14,6 @@ enum TTTCell
 };
 typedef TTTCell TTTPlayer;
 
-
 template<int50 BOARD_SIZE, int50 WINNING_CHAIN_SIZE>
 class GameTTT
 {
@@ -211,33 +210,33 @@ public:
 };
 
 
-enum TTTFeature
-{
-    NONE = 0,
-    SELF = 1,
-    OPPO = 2
-};
+
+
+////
+// Interface format:
+// percept = (board[row][col][TTTCell], pass_cnt, player_to_move)
+// action = (board[row][col])
+////
+#define SIZE_PERCEPT_TTT    (BOARD_SIZE*BOARD_SIZE*3+2)
+#define SIZE_ACTION_TTT     (BOARD_SIZE*BOARD_SIZE)
 
 template<int50 BOARD_SIZE, int50 WINNING_CHAIN_SIZE>
-class Environment_TTT : public Environment<BOARD_SIZE*BOARD_SIZE*3, BOARD_SIZE*BOARD_SIZE>
+class Environment_TTT : public Environment<SIZE_PERCEPT_TTT, SIZE_ACTION_TTT>
 {
 public:
-    static const int50 SIZE_PERCEPT_TTT  = BOARD_SIZE*BOARD_SIZE*3;
-    static const int50 SIZE_ACTION_TTT  = BOARD_SIZE*BOARD_SIZE;
-
     GameTTT<BOARD_SIZE, WINNING_CHAIN_SIZE> game;
     bool game_over;
     TTTPlayer winner;  
     TTTPlayer agent_color;
-    const TTTPlayer agent_color_setup;
-    Agent<SIZE_PERCEPT_TTT, SIZE_ACTION_TTT>* p_opp;
 
+    TTTPlayer agent_color_setup;
+    Agent<SIZE_PERCEPT_TTT, SIZE_ACTION_TTT>* p_opp;
     bool verbose_mode;
     int50 round;
 
 
 public:
-    Environment_TTT(Agent<SIZE_PERCEPT_TTT, SIZE_ACTION_TTT>* opponent, TTTPlayer agent_color =EMPTY, bool verbose =false) 
+    Environment_TTT(Agent<SIZE_PERCEPT_TTT, SIZE_ACTION_TTT>* opponent =NULL, TTTPlayer agent_color =EMPTY, bool verbose =false) 
         : p_opp(opponent), agent_color_setup(agent_color), verbose_mode(verbose), round(0) 
     {
         Reset();
@@ -245,66 +244,10 @@ public:
 
 	virtual ~Environment_TTT(){}
 
-    // perform an opponent step inside the environment, using the internal agent of the environment 
-    void PerformOpponentStep()
-    {
-        if(game_over)
-        {
-            // we will not make a real opponent move if the game is already over,
-            // instead, we directly flip 'player_to_move' to skip this ply
-            game.player_to_move = (game.player_to_move==BLACK)?WHITE:BLACK;
-            return;
-        }
-            
-        if(verbose_mode) game.Print();
-
-        double x[BOARD_SIZE][BOARD_SIZE][3];
-        double a[BOARD_SIZE][BOARD_SIZE];
-
-        for(int50 i=0; i<BOARD_SIZE; i++) 
-        for(int50 j=0; j<BOARD_SIZE; j++) 
-        {
-            if(game.board[i][j] == EMPTY)
-            {
-                x[i][j][NONE] = 1; x[i][j][SELF] = 0; x[i][j][OPPO] = 0;
-            }
-            else if(game.board[i][j] != agent_color) // the percept should be in the perspective of the the opponent player
-            {
-                x[i][j][NONE] = 0; x[i][j][SELF] = 1; x[i][j][OPPO] = 0;
-            }
-            else
-            {
-                x[i][j][NONE] = 0; x[i][j][SELF] = 0; x[i][j][OPPO] = 1;
-            }
-        }
-        p_opp->TakeAction((double*)a, (double*)x, 0, false);
-
-        int50 move = vec_argmax<double>((double*)a, BOARD_SIZE*BOARD_SIZE);
-        game.Play(move);
-
-        if(verbose_mode) system("cls");
-    }
-
-public:
-    virtual void Reset()
-    {
-        game.Reset();
-        game_over = false;
-        winner = EMPTY;
-        agent_color = (agent_color_setup != EMPTY) ? agent_color_setup : (rand()%2==0) ? BLACK : WHITE;
-        round ++;
-
-        if(verbose_mode) printf("Game %lld: agent plays %s\n\n", round, (agent_color==BLACK)?"BLACK":"WHITE");
-
-        if(agent_color == WHITE)
-        {
-            PerformOpponentStep();
-        }
-    }
 
 	virtual bool Update(OUT_ double* x, OUT_ double& r, OUT_ bool& fTerminal, IN_ double* a)
     {
-        assert(game.player_to_move == agent_color);
+        assert(game_over || game.player_to_move == agent_color);
 
         if(game_over)
         {
@@ -314,33 +257,89 @@ public:
         {
             int50 move = vec_argmax<double>(a, BOARD_SIZE*BOARD_SIZE);
             game.Play(move);
+            
             game.Evaluate(game_over, winner);
-            PerformOpponentStep();
+            if(not game_over)
+            {
+                PerformOpponentStep();
+            }
         }
         game.Evaluate(game_over, winner);
 
-        assert(game.player_to_move == agent_color);
-        fTerminal = game_over;
-        r = (not game_over || winner == EMPTY) ? 0 : (winner == agent_color) ? 1 : -1; 
-        for(int50 p=0; p<BOARD_SIZE*BOARD_SIZE; p++)
+        assert(game_over || game.player_to_move == agent_color);
+
+        if(game_over)
         {
-            if(game.board_1d[p] == EMPTY)
-            {
-                x[p*3+NONE] = 1; x[p*3+SELF] = 0; x[p*3+OPPO] = 0;
-            }
-            else if(game.board_1d[p] == agent_color)
-            {
-                x[p*3+NONE] = 0; x[p*3+SELF] = 1; x[p*3+OPPO] = 0;
-            }
-            else
-            {
-                x[p*3+NONE] = 0; x[p*3+SELF] = 0; x[p*3+OPPO] = 1;
-            }
+            // inform the opponent agent immediately if game is over 
+            // (note that this could reverse the playing order temporarily during the "game over" phase)
+            PerformOpponentStep();
         }
 
+        fTerminal = game_over;
+        r = (not game_over || winner == EMPTY) ? 0 : (winner == agent_color) ? 1 : -1; 
+        GenPercept(x);
         return fTerminal;
     }
     
+public:
+    virtual void Reset()
+    {
+        game.Reset();
+        game_over = false;
+        winner = EMPTY;
+        agent_color = (agent_color_setup != EMPTY) ? agent_color_setup : (rand()%2==0) ? BLACK : WHITE;
+        round ++;
+
+        if(verbose_mode) printf("Game %lld: the agent plays %s\n\n", round, (agent_color==BLACK)?"BLACK":"WHITE");
+
+        if(agent_color == WHITE)
+        {
+            PerformOpponentStep();
+        }
+    }
+
+    // perform an opponent step inside the environment, using the 'p_opp' agent of the environment 
+    void PerformOpponentStep()
+    {    
+        if(verbose_mode) 
+        {
+            system("cls");
+            printf("[ Opponent (%s) 's Turn ]\n\n", (agent_color!=BLACK)?"BLACK":"WHITE");
+            game.Print();
+        }
+
+        double x[SIZE_PERCEPT_TTT];
+        double a[SIZE_ACTION_TTT];
+
+        bool fTerminal = game_over;
+        double r = (not game_over || winner == EMPTY) ? 0 : (winner != agent_color) ? 1 : -1;       // it's a zero-sum game 
+        GenPercept(x);
+        p_opp->TakeAction(a, x, r, fTerminal);
+
+        // update the game if the game is going on;
+        // oterhwise if the game has been over, we keep the game state frozen before resetting it (later at somewhere else)
+        if(not game_over)
+        {
+            int50 move = vec_argmax<double>(a, SIZE_ACTION_TTT);
+            game.Play(move);
+        }
+    }
+
+     void GenPercept(double* x) const
+    {
+        int50 p;
+        for(p=0; p<BOARD_SIZE*BOARD_SIZE*3; p+=3) 
+        {
+            x[p + EMPTY] = (game.board_1d[p/3] == EMPTY) ? 1 : 0;
+            x[p + BLACK] = (game.board_1d[p/3] == BLACK) ? 1 : 0;
+            x[p + WHITE] = (game.board_1d[p/3] == WHITE) ? 1 : 0;
+        }
+        x[p++] = game.pass_cnt;
+        x[p++] = game.player_to_move;
+        assert(p == SIZE_PERCEPT_TTT);
+    }
+
+public:
     virtual void Print(FILE* fp=stdout) 
     {
         game.Print(fp);
@@ -350,32 +349,179 @@ public:
         }
     }
 
-    virtual void Report(FILE* fp=stdout, int detail_level=1, bool reset=true) {}
+    virtual void Report(FILE* fp=stdout, int detail_level=1, bool reset=true) 
+    {
+        p_opp->Report(fp, detail_level, reset);
+    }
 };
 
 
 
+
+
+enum TTTFeature
+{
+    NONE = 0,
+    SELF = 1,
+    OPPO = 2
+};
+
+//
+#define SIZE_PERCEPT_T3W       (BOARD_SIZE*BOARD_SIZE*3)
+#define SIZE_ACTION_T3W        SIZE_ACTION_TTT
+
 template<int50 BOARD_SIZE, int50 WINNING_CHAIN_SIZE>
-class AgentKB_TTT : public Agent<BOARD_SIZE*BOARD_SIZE*3, BOARD_SIZE*BOARD_SIZE>
+class Agent_TTTWrapper : public Agent<SIZE_PERCEPT_TTT, SIZE_ACTION_TTT>
+{
+public:
+    Agent<SIZE_PERCEPT_T3W, SIZE_ACTION_T3W>* pAgent;
+    bool first_turn_in_game;
+    double r_last_game;
+    bool verbose_mode;
+
+public:
+    Agent_TTTWrapper(Agent<SIZE_PERCEPT_T3W, SIZE_ACTION_T3W>* pAgent_rhs, bool verbose =false)
+        : pAgent(pAgent_rhs), first_turn_in_game(true), r_last_game(0), verbose_mode(verbose)
+    {}
+
+	virtual ~Agent_TTTWrapper(){}
+
+
+	virtual bool TakeAction(OUT_ double* a, IN_ double* x, IN_ double r, IN_ bool fTerminal=false)
+	{
+        int50 pass_cnt = x[BOARD_SIZE*BOARD_SIZE*3];
+        TTTPlayer player_to_move = (x[BOARD_SIZE*BOARD_SIZE*3+1] == BLACK) ? BLACK : (x[BOARD_SIZE*BOARD_SIZE*3+1] == WHITE) ? WHITE : EMPTY;
+        assert(player_to_move == BLACK || player_to_move == WHITE);
+        assert(pass_cnt < 2 || fTerminal == true);
+        assert(not (first_turn_in_game && fTerminal));
+
+        // convert board to first-person perspective
+        double x_board[SIZE_PERCEPT_T3W];
+        for(int50 p=0; p<BOARD_SIZE*BOARD_SIZE; p++)
+        {
+            TTTCell color = (TTTCell)vec_argmax<double>(x+3*p, 3);
+            x_board[3*p+NONE] = (color == EMPTY) ? 1 : 0;
+            x_board[3*p+SELF] = (color == player_to_move) ? 1 : 0;
+            x_board[3*p+OPPO] = (color != player_to_move) ? 1 : 0;   
+        }
+
+        if(first_turn_in_game)
+        {
+            pAgent->TakeAction(a, x_board, r_last_game, true);
+        }
+        else if(not fTerminal)
+        {
+            pAgent->TakeAction(a, x_board, r, false);
+        }
+        else // if the game has ended, with at least one action performed by the agent in the game
+        {
+            // skip the "confirmation" action (so that it won't confuse the real agent) 
+        }
+
+        if(verbose_mode)
+        {
+            if(first_turn_in_game || not fTerminal)
+            {
+                // show the received x_board ('x' stands for agent's piece, 'o' stands for opponent's piece)
+                char symbol[3] = {' ', 'x', 'o'};
+                FILE* fp = stdout;
+
+                //system("cls");
+                fprintf(fp, "\n---------- Agent_TTTWrapper ------------\n\n");
+                fprintf(fp, "r = %.0lf \t fTerminal = %s \t (first_turn = %s \t r_last_game = %.0lf)\n\n", 
+                    (first_turn_in_game) ? r_last_game : (not fTerminal) ? r : -1000, 
+                    (first_turn_in_game) ? "true" : (not fTerminal) ? "false" : "confirmation turn",
+                    (first_turn_in_game) ? "true" : "false",
+                    r_last_game );
+
+                fprintf(fp, "\t"); for(int50 j=0; j<BOARD_SIZE; j++) fprintf(fp, " %c  ", 'a'+j); fprintf(fp, "\n");
+                fprintf(fp, "\t"); for(int50 j=0; j<BOARD_SIZE; j++) fprintf(fp, "----"); fprintf(fp, "\n");
+
+                for(int50 i=0; i<BOARD_SIZE; i++)
+                {
+                    printf("%6lld |", i);
+                    for(int50 j=0; j<BOARD_SIZE; j++)
+                    {
+                        int50 feature = vec_argmax(x_board + 3*(i*BOARD_SIZE+j), 3);
+                        fprintf(fp, " %c |", symbol[feature]);
+                    }
+                    fprintf(fp, "\n\t"); for(int50 j=0; j<BOARD_SIZE; j++) fprintf(fp, "----"); fprintf(fp, "\n");
+                }
+                //fprintf(fp, "\n('%c' stands for SELF, '%c' stands for OPPONENT)\n\n", symbol[SELF], symbol[OPPO]);
+
+                fprintf(fp, "\naction = %lld\n\n", vec_argmax<double>(a, SIZE_ACTION_T3W));
+
+                system("pause");
+                //while(getchar() == '\n') ;
+            }
+        }
+
+        if(fTerminal)
+        {
+            // since the real agent does not take action at the terminal position of a game,
+            // we need to delay both the "end-of-episode" signal and the "end-of-episode" reward to the first turn of the agent in the next game
+            first_turn_in_game = true;
+            r_last_game = r;
+        }
+        else
+        {
+            // a non-terminal position cannot directly followed by a "first-turn" position (of the next game)
+            first_turn_in_game = false;
+            r_last_game = 0; 
+        }
+
+		return true;
+	}
+
+    virtual bool Act(OUT_ double* a, IN_ double* x)
+    {
+        return false;
+    }
+	virtual bool Learn(IN_ double* x, IN_ double* a, IN_ double r)
+    {
+        return false;
+    }
+    virtual void Print(FILE* fp=stdout) 
+    {
+        pAgent->Print(fp);
+    }
+    virtual void Report(FILE* fp=stdout, int50 detail_level=1, bool reset=true) 
+    {
+        pAgent->Report(fp, detail_level, reset);
+    }
+};
+
+
+
+
+template<int50 BOARD_SIZE, int50 WINNING_CHAIN_SIZE>
+class AgentKB_TTT : public Agent<SIZE_PERCEPT_TTT, SIZE_ACTION_TTT>
 {
 public:
     AgentKB_TTT() {}
 	virtual ~AgentKB_TTT(){}
 
-    virtual bool Act(OUT_ double* a, IN_ double* x){return true;}
-
-    virtual bool Learn(IN_ double* x, IN_ double* a, IN_ double r){return true;}
-
 	virtual bool TakeAction(OUT_ double* a, IN_ double* x, IN_ double r, IN_ bool fTerminal=false)
 	{
         FILE* fp = stdout;
 		fprintf(fp, "\nr = %lf \t fTerminal = %s\n\n", r, (fTerminal)?"true":"false");
-		
-        // show board from the player's perspective
-        double board[BOARD_SIZE][BOARD_SIZE][3];
-        memcpy(board, x, sizeof(board));
-        char symbol[3] = {' ', 'x', 'o'}; // 'x' for agent's piece, 'o' for opponent's piece
-        
+		 
+        // show the board from this agent's perspective;
+        // 'x' for agent's piece, 'o' for opponent's piece
+        char symbol[3] = {' ', 'x', 'o'};
+        TTTFeature board[BOARD_SIZE][BOARD_SIZE];
+        int50 pass_cnt;
+        TTTPlayer player_to_move;
+
+        pass_cnt = x[BOARD_SIZE*BOARD_SIZE*3];
+        player_to_move = (x[BOARD_SIZE*BOARD_SIZE*3+1] == BLACK) ? BLACK : (x[BOARD_SIZE*BOARD_SIZE*3+1] == WHITE) ? WHITE : EMPTY;
+        assert(player_to_move == BLACK || player_to_move == WHITE);
+        for(int50 p=0; p<BOARD_SIZE*BOARD_SIZE; p++)
+        {
+            TTTCell color = (TTTCell)vec_argmax<double>(x+3*p, 3);
+            board[p/BOARD_SIZE][p%BOARD_SIZE] = (color==EMPTY) ? NONE : (color == player_to_move) ? SELF : OPPO;       
+        } 
+  
         fprintf(fp, "\t"); for(int50 j=0; j<BOARD_SIZE; j++) fprintf(fp, " %c  ", 'a'+j); fprintf(fp, "\n");
         fprintf(fp, "\t"); for(int50 j=0; j<BOARD_SIZE; j++) fprintf(fp, "----"); fprintf(fp, "\n");
 
@@ -384,8 +530,7 @@ public:
             printf("%6lld |", i);
             for(int50 j=0; j<BOARD_SIZE; j++)
             {
-                int50 content = vec_argmax<double>(board[i][j], 3);
-                fprintf(fp, " %c |", symbol[content]);
+                fprintf(fp, " %c |", symbol[board[i][j]]);
             }
             fprintf(fp, "\n\t"); for(int50 j=0; j<BOARD_SIZE; j++) fprintf(fp, "----"); fprintf(fp, "\n");
         }
@@ -397,7 +542,7 @@ public:
             int row;
             int col;
             char col_chr;
-            if( scanf("%d%c", &row, &col_chr) != 2 ) continue;
+            if( scanf("%c%d", &col_chr, &row) != 2 ) continue;
             col = col_chr - 'a';
             if(row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) continue;
 
@@ -410,45 +555,33 @@ public:
 		return true;
 	}
 
+    virtual bool Act(OUT_ double* a, IN_ double* x){return true;}
+    virtual bool Learn(IN_ double* x, IN_ double* a, IN_ double r){return true;}
     virtual void Print(FILE* fp=stdout) {} 
     virtual void Report(FILE* fp=stdout, int50 detail_level=1, bool reset=true) {}
 };
 
 
-void ttt_test()
+
+
+template<int50 BOARD_SIZE, int50 WINNING_CHAIN_SIZE>
+void ttt_test(Agent<SIZE_PERCEPT_TTT, SIZE_ACTION_TTT>* pAgent_test =NULL)
 {
-    static const int board_size = 15;
-    static const int winning_chain_size = 5;
-    AgentKB_TTT<board_size,winning_chain_size> agent;
-    Environment_TTT<board_size,winning_chain_size> env(&agent, EMPTY, true);
-    
-    double x[board_size][board_size][3];
-    double a[board_size][board_size];
+    AgentKB_TTT<BOARD_SIZE,WINNING_CHAIN_SIZE> agent_kb;
+    Environment_TTT<BOARD_SIZE,WINNING_CHAIN_SIZE> env( (pAgent_test) ? (pAgent_test) : (&agent_kb), EMPTY, true );
+
+    double x[SIZE_PERCEPT_TTT];
+    double a[SIZE_ACTION_TTT];
     double r = 0;
     bool fTerminal = false;
-
-    for(int50 i=0; i<board_size; i++) 
-    for(int50 j=0; j<board_size; j++) 
-    {
-        if(env.game.board[i][j] == EMPTY)
-        {
-            x[i][j][NONE] = 1; x[i][j][SELF] = 0; x[i][j][OPPO] = 0;
-        }
-        else if(env.game.board[i][j] == env.agent_color) 
-        {
-            x[i][j][NONE] = 0; x[i][j][SELF] = 1; x[i][j][OPPO] = 0;
-        }
-        else
-        {
-            x[i][j][NONE] = 0; x[i][j][SELF] = 0; x[i][j][OPPO] = 1;
-        }
-    }
-
+    env.GenPercept(x);
+    
     while(true)
     {
-        env.Print();
-        agent.TakeAction((double*)a, (double*)x, r, fTerminal);
         system("cls");
+        printf("[ Agent (%s)'s Turn ]\n\n", (env.agent_color==BLACK)?"BLACK":"WHITE");
+        env.Print();
+        agent_kb.TakeAction((double*)a, (double*)x, r, fTerminal);
         env.Update((double*)x, r, fTerminal, (double*)a);
     }
 

@@ -71,7 +71,7 @@
 //    // create the agent
 //    static const int50 batch_size = 32;
 //    int50 num_parallel_learner = 16;
-//    char* filename_weight = "weight.bin"; //NULL;
+//    char* filename_weight = NULL;
 //	std::vector<DCNN_CONFIG> config;
 //
 //	// Foraging 10x10
@@ -104,8 +104,8 @@
 //	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		32, 3,  2, -1,  7,  7));
 //	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		10, 7,  1,  0,  1,  1));
 //
-//    //Agent_DQN<SIZE_PERCEPT_ALE, SIZE_ACTION_SI> agent(config, filename_weight, batch_size, num_parallel_learner, 5000, 100000, 1.0, 0.1);
-//    Agent_DQN<SIZE_PERCEPT_ALEW, SIZE_ACTION_SI> agent_dqn(config, filename_weight, batch_size, num_parallel_learner, 50, 100000, 0.1, 0.1);
+//    //Agent_DQN<SIZE_PERCEPT_ALE, SIZE_ACTION_SI> agent_dqn(config, filename_weight, batch_size, num_parallel_learner, 5000, 100000, 1.0, 0.1);
+//    Agent_DQN<SIZE_PERCEPT_ALEW, SIZE_ACTION_SI> agent_dqn(config, filename_weight, batch_size, num_parallel_learner, 5000, 100000, 1.0, 0.1);
 //
 //
 //    // create the envionment
@@ -130,11 +130,89 @@
 //
 
 
+// ttt_main
+
+void ttt_main()
+{
+    static const int50 BOARD_SIZE = 3;
+    static const int50 CHAIN_SIZE = 3;
+
+    // create the agent
+    static const int50 batch_size = 32;
+    int50 num_parallel_learner = 2;
+    char* filename_weight = NULL;
+	std::vector<DCNN_CONFIG> config;
+
+	// Foraging 10x10
+	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	5,	0,  1,  0, 10, 10));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		10,	3,  1, -1, 10, 10));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		20, 3,  1,  0,  8,  8));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		40, 3,  1,  0,  6,  6));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		80, 3,  1,  0,  4,  4)); 
+	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,	9,	4,  1,  0,  1,  1));
+
+	//// aDQN (4-way input)
+	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	4,	0,	1,	0,	84,	84));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		16,	8,	4,	0,	20,	20));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		32,	4,	2,	0,	9,	9));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		256,9,	1,	0,	1,	1));
+	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		SIZE_ACTION,	1,	1,	0,	1,	1));
+
+	//// DQN (4-way input)
+	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	4,	0,	1,	0,	84,	84));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		32,	8,	4,	0,	20,	20));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		64,	4,	2,	0,	9,	9));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		64,	3,	1,	0,	7,	7));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		512,7,	1,	0,	1,	1));
+	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		18,	1,	1,	0,	1,	1));
+
+	//// MNIST
+	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	1,	0,  0,  0, 28, 28));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		8,	5,  1, -2, 28, 28));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		16, 3,  2, -1, 14, 14));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		32, 3,  2, -1,  7,  7));
+	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		10, 7,  1,  0,  1,  1));
+
+    // Tic-Tac-Toe (3,3)
+	config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	3,	0,  0,  0, 3, 3));
+	config.push_back(DCNN_CONFIG(NTYPE_RELU,		100,3,  1,  0, 1, 1));
+	config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		9,  1,  1,  0, 1, 1));
+
+
+    Agent_DQN<SIZE_PERCEPT_T3W, SIZE_ACTION_T3W> agent_core(config, filename_weight, batch_size, num_parallel_learner, 5000, 100000, 1.0, 0.1);
+    Agent_TTTWrapper<BOARD_SIZE, CHAIN_SIZE> agent(&agent_core, false);
+
+
+    // create the envionment
+    //AgentKB_TTT<BOARD_SIZE, CHAIN_SIZE> agent_oppo;
+    Agent_DQN<SIZE_PERCEPT_T3W, SIZE_ACTION_T3W> agent_oppo_core(config, filename_weight, batch_size, num_parallel_learner, 5000, 100000, 1.0, 0.1);
+    Agent_TTTWrapper<BOARD_SIZE, CHAIN_SIZE> agent_oppo(&agent_oppo_core, false);
+    Environment_TTT<BOARD_SIZE, CHAIN_SIZE> env(&agent_oppo, EMPTY, false); 
+
+    // do the experiment
+    int50 nStep = -1; //120000;
+    int50 step_reporting_cycle = -1; //100 * UPDATE_INTERVAL;
+    int50 nEpisode = 200000;
+    int50 episode_reporting_cycle = 100;
+
+    RL_Experiment(env, agent, nEpisode, episode_reporting_cycle);
+
+
+    Agent_DQN<SIZE_PERCEPT_T3W, SIZE_ACTION_T3W> agent_test_core(config, "weight.bin", 0, 0, 100000, 100001, 0.0, 0.0);
+    Agent_TTTWrapper<BOARD_SIZE, CHAIN_SIZE> agent_test(&agent_test_core, true);
+    ttt_test<BOARD_SIZE, CHAIN_SIZE>(&agent_test);
+
+    return;
+}
+
+
 int main(int argc, char *argv[])
 {
     //mnist_main();
     //ale_main();
-    ttt_test();
+    ttt_main();
+    //ttt_test<3,3>();
+
 
     return 0;
 }

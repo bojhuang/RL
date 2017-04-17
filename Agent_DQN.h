@@ -435,7 +435,7 @@ public:
 		if(fTerminal || stm.size() >= TD_MAX_GAP)
 		{
 			int50 stm_new_size = (fTerminal) ? (0) : (TD_MAX_GAP-1);
-			assert(stm.size() > stm_new_size);
+			assert(stm.size() >= stm_new_size);
 			assert(stm.size() <= TD_MAX_GAP);
 			
 			// compute the tail reward

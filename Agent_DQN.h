@@ -57,7 +57,7 @@ protected:
 
 //// core data structures -------------------------
 //
-protected:
+public:
 	DCNN<SIZE_PERCEPT, SIZE_ACTION> nn;        // used as action evaluation function in decision making (i.e. Q^{T.t})
 	DCNN<SIZE_PERCEPT, SIZE_ACTION> nn_target; // used as action evaluation function in TD updates (i.e. Q^T)
 

@@ -185,22 +185,30 @@ void ttt_main()
 
     // create the envionment
     //AgentKB_TTT<BOARD_SIZE, CHAIN_SIZE> agent_oppo;
-    Agent_DQN<SIZE_PERCEPT_T3W, SIZE_ACTION_T3W> agent_oppo_core(config, filename_weight, batch_size, num_parallel_learner, 5000, 100000, 1.0, 0.1);
-    Agent_TTTWrapper<BOARD_SIZE, CHAIN_SIZE> agent_oppo(&agent_oppo_core, false);
+    //Agent_DQN<SIZE_PERCEPT_T3W, SIZE_ACTION_T3W> agent_oppo_core(config, filename_weight, batch_size, num_parallel_learner, 5000, 100000, 1.0, 0.1);
+    //Agent_TTTWrapper<BOARD_SIZE, CHAIN_SIZE> agent_oppo(&agent_oppo_core, false);
+    Agent_TTTMinimax<BOARD_SIZE,CHAIN_SIZE> agent_oppo;
     Environment_TTT<BOARD_SIZE, CHAIN_SIZE> env(&agent_oppo, EMPTY, false); 
 
     // do the experiment
     int50 nStep = -1; //120000;
     int50 step_reporting_cycle = -1; //100 * UPDATE_INTERVAL;
-    int50 nEpisode = 200000;
+    int50 nEpisode = 100000;
     int50 episode_reporting_cycle = 100;
 
     RL_Experiment(env, agent, nEpisode, episode_reporting_cycle);
+    agent_core.nn.DumpWeights();
 
 
     Agent_DQN<SIZE_PERCEPT_T3W, SIZE_ACTION_T3W> agent_test_core(config, "weight.bin", 0, 0, 100000, 100001, 0.0, 0.0);
-    Agent_TTTWrapper<BOARD_SIZE, CHAIN_SIZE> agent_test(&agent_test_core, true);
-    ttt_test<BOARD_SIZE, CHAIN_SIZE>(&agent_test);
+    Agent_TTTWrapper<BOARD_SIZE, CHAIN_SIZE> agent_test(&agent_test_core, false);
+
+    printf("\n\n======================\n");
+    printf("Testing Stage\n");
+    printf("======================\n\n");
+    RL_Experiment(env, agent_test, 1000, 1);
+
+    ttt_test<BOARD_SIZE, CHAIN_SIZE>(&agent_test, EMPTY);
 
     return;
 }
@@ -210,8 +218,10 @@ int main(int argc, char *argv[])
 {
     //mnist_main();
     //ale_main();
+    
     ttt_main();
-    //ttt_test<3,3>();
+    Agent_TTTMinimax<3,3> agent_minimax;
+    ttt_test<3,3>(&agent_minimax, BLACK);
 
 
     return 0;

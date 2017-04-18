@@ -27,15 +27,17 @@ protected:
     int50 last_move;                    // 1d-position of the last move
     TTTPlayer winning_chain_color;      // indicate the player who has first made a winning chain; set to 'EMPTY' if the board does not contain a winning chain yet
     int50 winning_chain_map[BOARD_SIZE][BOARD_SIZE];
-    
-    int50 col_winning_chain;
-    char dir_winning_chain;              // 'r' for row chain,'c' for column chain, 'd' for diagonal chain 
 
 public:
     GameTTT() 
         : board_1d((TTTCell*)board) 
     {
         Reset();
+    }
+    GameTTT(const GameTTT& game_rhs) 
+        : board_1d((TTTCell*)board) 
+    {
+        Copy(game_rhs);
     }
     virtual ~GameTTT() {}
 
@@ -59,6 +61,21 @@ public:
         last_move = -1;
         winning_chain_color = EMPTY;
         
+    }
+
+    void Copy(const GameTTT& game_rhs)
+    {
+        for(int50 i=0; i<BOARD_SIZE; i++) 
+        for(int50 j=0; j<BOARD_SIZE; j++) 
+        {
+            board[i][j] = game_rhs.board[i][j];
+            winning_chain_map[i][j] = game_rhs.winning_chain_map[i][j];
+        }
+
+        player_to_move = game_rhs.player_to_move;
+        pass_cnt = game_rhs.pass_cnt;   
+        last_move = game_rhs.last_move;
+        winning_chain_color = game_rhs.winning_chain_color;
     }
 
     void Play(IN_ int50 pos)
@@ -172,6 +189,22 @@ public:
                 game_over = false;  
                 winner = EMPTY;
             }
+        }
+
+        if(not game_over)
+        {
+            assert(winner == EMPTY);
+
+            bool board_is_full = true;
+            for(int50 p=0; p<BOARD_SIZE*BOARD_SIZE; p++)
+            {
+                if(board_1d[p] == EMPTY)
+                {
+                    board_is_full = false;
+                    break;
+                }
+            }
+            game_over = board_is_full;
         }
     }
 
@@ -541,12 +574,32 @@ public:
             printf("Input: ");
             int row;
             int col;
+            
             char col_chr;
-            if( scanf("%c%d", &col_chr, &row) != 2 ) continue;
+            char buf[100];
+            scanf("%s", buf);
+            if(buf[0] >= '0' && buf[0] <= '9')
+            {
+                if( sscanf(buf, "%d%c", &row, &col_chr) != 2 ) continue;   
+            }
+            else
+            {
+                if( sscanf(buf, "%c%d", &col_chr, &row) != 2 ) continue;
+            }
+            
             col = col_chr - 'a';
             if(row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) continue;
 
             int50 move = row*BOARD_SIZE + col;
+            if(board[row][col] != NONE)
+            {
+                printf("play [%s] will pass the turn, are you sure? (y/n) ", buf);
+                char confirm_chr = 0;
+                while(confirm_chr != 'y' && confirm_chr != 'n') confirm_chr = getchar();
+                if(confirm_chr == 'n') continue;
+                assert(confirm_chr == 'y');
+            }
+
             for(int i=0; i<BOARD_SIZE*BOARD_SIZE; i++) a[i] = 0;
             a[move] = 1;
             break;
@@ -563,12 +616,228 @@ public:
 
 
 
+template<int50 BOARD_SIZE, int50 WINNING_CHAIN_SIZE>
+class Agent_TTTMinimax : public Agent<SIZE_PERCEPT_TTT, SIZE_ACTION_TTT>
+{
+public:
+    class PositionRecord
+    {
+    public:
+        bool settled;
+        TTTPlayer winner;
+
+        PositionRecord() : settled(false), winner(EMPTY) {}
+    };
+    
+    class TransportationTable
+    {
+    protected:
+        int50 n_settled;
+        PositionRecord* s; 
+        
+    public:
+        TransportationTable()
+        {
+            n_settled = 0;
+            if(BOARD_SIZE > 4) 
+            {
+                printf("[Agent_TTTMinimax Error] board size (%lld) is too large to create the transportation table.\n", BOARD_SIZE);
+                s = NULL;
+            }
+            else
+            {
+                s = new PositionRecord[((int50)1)<<(BOARD_SIZE*BOARD_SIZE*2+2)];
+            }    
+        }
+
+        virtual ~TransportationTable() 
+        {
+            if(s != NULL) delete[] s;
+        }
+
+        PositionRecord* GetRecord(const GameTTT<BOARD_SIZE, WINNING_CHAIN_SIZE>& game)
+        {
+            int50 id = GetID(game);
+            return &s[id];
+        }
+
+        void SetRecord(const GameTTT<BOARD_SIZE, WINNING_CHAIN_SIZE>& game, TTTPlayer winner, PositionRecord* pRecord_from_user =NULL)
+        {
+            PositionRecord* pRecord = (pRecord_from_user) ? pRecord_from_user : GetRecord(game);
+            
+            if(pRecord->settled == false) 
+                n_settled ++;
+            
+            pRecord->winner = winner;
+            pRecord->settled = true;
+        }
+        
+        // even id's for BLACK's turns, odd id's for WHITE's turns
+        int50 GetID(const GameTTT<BOARD_SIZE, WINNING_CHAIN_SIZE>& game)
+        {
+            // terminal position should not be buffered
+            assert(game.pass_cnt == 0 || game.pass_cnt == 1);
+            assert(game.player_to_move == BLACK || game.player_to_move == WHITE);
+
+            int50 id = 0;
+            for(int50 p=0; p<BOARD_SIZE*BOARD_SIZE; p++)
+            {
+                id = id << 2;
+                id += game.board_1d[p];
+            }
+
+            id = id << 1;
+            id += game.pass_cnt;
+            
+            id = id << 1;
+            id += (game.player_to_move == BLACK) ? 0 : 1;
+
+            return id;
+        }
+    };
+    
+public:
+    int50 search_cnt;
+    TransportationTable tt;
+    
+public:
+    Agent_TTTMinimax() {}
+    virtual ~Agent_TTTMinimax() {}
+
+    virtual bool TakeAction(OUT_ double* a, IN_ double* x, IN_ double r, IN_ bool fTerminal=false)
+	{
+        if(fTerminal == true) 
+        {
+            if(r < 0) 
+            {
+                printf("[Error] Agent_TTTMinimax lost a game (r=%lf).\n", r);
+                getchar();
+            }
+            return true;
+        }
+
+        int50 pass_cnt = x[BOARD_SIZE*BOARD_SIZE*3];
+        TTTPlayer player_to_move = (x[BOARD_SIZE*BOARD_SIZE*3+1] == BLACK) ? BLACK : (x[BOARD_SIZE*BOARD_SIZE*3+1] == WHITE) ? WHITE : EMPTY;
+        assert(player_to_move == BLACK || player_to_move == WHITE);
+        assert(pass_cnt < 2 || fTerminal == true);
+
+        GameTTT<BOARD_SIZE, WINNING_CHAIN_SIZE> s;
+        s.pass_cnt = pass_cnt;
+        s.player_to_move = player_to_move;
+        for(int50 p=0; p<BOARD_SIZE*BOARD_SIZE; p++) s.board_1d[p] = (TTTCell)vec_argmax<double>(x+3*p, 3); 
+        
+        std::vector<int50> winning_moves;
+        std::vector<int50> draw_moves;
+        std::vector<int50> losing_moves;
+        search_cnt = 0;
+
+        for(int50 action = 0; action<BOARD_SIZE*BOARD_SIZE; action++)
+        {
+            GameTTT<BOARD_SIZE, WINNING_CHAIN_SIZE> s_next(s);
+            s_next.Play(action);
+
+            TTTPlayer winner = Minimax(s_next);
+            
+            if(winner == EMPTY) 
+            {
+                draw_moves.push_back(action);
+            }
+            else if(winner == s.player_to_move)
+            {
+                winning_moves.push_back(action);
+            }
+            else
+            {
+                losing_moves.push_back(action);
+            }
+        }
+
+        int50 opt_move;
+        if(winning_moves.size() > 0) 
+        {
+            opt_move = winning_moves[ rand()%winning_moves.size() ];
+        }
+        else if(draw_moves.size() > 0)
+        {
+            opt_move = draw_moves[ rand()%draw_moves.size() ];
+        }
+        else
+        {
+            assert(losing_moves.size() > 0);
+            opt_move = losing_moves[ rand()%losing_moves.size() ];
+        }
+
+        for(int i=0; i<SIZE_ACTION_TTT; i++) a[i] = 0;
+        a[opt_move] = 1;
+
+        return true;
+    }
+
+    TTTPlayer Minimax(GameTTT<BOARD_SIZE, WINNING_CHAIN_SIZE>& s)
+    {
+        search_cnt ++;
+        //if(search_cnt%1000 == 0) printf("#nodes searched = %lld\n", search_cnt);
+
+        TTTPlayer winner;
+        bool game_over;
+        s.Evaluate(game_over, winner);
+        if(game_over)
+        {
+            return winner;
+        }
+
+        int50 id = tt.GetID(s);
+        PositionRecord* pRecord = tt.GetRecord(s); 
+        if(pRecord != NULL && pRecord->settled == true) return pRecord->winner;
+
+        TTTPlayer self = s.player_to_move;
+        TTTPlayer oppo = (s.player_to_move == BLACK) ? WHITE : BLACK;
+        
+        winner = oppo;
+        bool pass_move_tested = false;
+
+        for(int50 action = 0; action<BOARD_SIZE*BOARD_SIZE; action++)
+        {
+            if(s.board_1d[action] != EMPTY && pass_move_tested) continue;
+            if(s.board_1d[action] != EMPTY) pass_move_tested = true;
+
+            GameTTT<BOARD_SIZE, WINNING_CHAIN_SIZE> s_next(s);
+            s_next.Play(action);
+            TTTPlayer w_next = Minimax(s_next);
+            winner = (winner == oppo) ? w_next : (winner == EMPTY && w_next == self) ? w_next : winner;
+        }
+
+        tt.SetRecord(s, winner, pRecord);
+
+        return winner;
+    }
+
+    virtual bool Act(OUT_ double* a, IN_ double* x)
+    {
+        return false;
+    }
+	virtual bool Learn(IN_ double* x, IN_ double* a, IN_ double r)
+    {
+        return false;
+    }
+    virtual void Print(FILE* fp=stdout) 
+    {
+        
+    }
+    virtual void Report(FILE* fp=stdout, int50 detail_level=1, bool reset=true) 
+    {
+       
+    }
+};
+
 
 template<int50 BOARD_SIZE, int50 WINNING_CHAIN_SIZE>
-void ttt_test(Agent<SIZE_PERCEPT_TTT, SIZE_ACTION_TTT>* pAgent_test =NULL)
+void ttt_test(Agent<SIZE_PERCEPT_TTT, SIZE_ACTION_TTT>* pAgent_test =NULL, TTTPlayer test_agent_color = EMPTY)
 {
     AgentKB_TTT<BOARD_SIZE,WINNING_CHAIN_SIZE> agent_kb;
-    Environment_TTT<BOARD_SIZE,WINNING_CHAIN_SIZE> env( (pAgent_test) ? (pAgent_test) : (&agent_kb), EMPTY, true );
+    pAgent_test = (pAgent_test) ? (pAgent_test) : (&agent_kb);
+    TTTPlayer agent_color = (test_agent_color == BLACK) ? WHITE : (test_agent_color == WHITE) ? BLACK : EMPTY;
+    Environment_TTT<BOARD_SIZE,WINNING_CHAIN_SIZE> env(pAgent_test , agent_color, true );
 
     double x[SIZE_PERCEPT_TTT];
     double a[SIZE_ACTION_TTT];

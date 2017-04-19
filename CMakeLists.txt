@@ -13,6 +13,7 @@ include_directories(../Arcade-Learning-Environment/src/common)
 file(GLOB SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
 set(CMAKE_CXX_FLAGS "-std=gnu++11 ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-pthread ${CMAKE_CXX_FLAGS}")
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/MNIST
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

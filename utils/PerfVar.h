@@ -4,10 +4,7 @@
 
 #include <stdio.h>
 #include <math.h>
-#if defined(__WIN32__)
-#include <windows.h>
-#include <process.h>
-#endif
+
 #include <assert.h>
 
 #if defined(__linux__) || defined(__APPLE__)
@@ -30,6 +27,8 @@ double toMicroSeconds(LARGE_INTEGER endTime, LARGE_INTEGER startTime)
 }
 
 #else
+#include <windows.h>
+#include <process.h>
 
 double toMicroSeconds(LARGE_INTEGER endTime, LARGE_INTEGER startTime, LARGE_INTEGER frequency)
 {

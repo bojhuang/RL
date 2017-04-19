@@ -454,7 +454,7 @@ public:
 				r_tail = vec_max<double>(nn_target.output, SIZE_ACTION);
 			}
 		
-			while(Agent<SIZE_PERCEPT, SIZE_ACTION>::stm.size() > stm_new_size)
+			while(stm.size() > stm_new_size)
 			{
 				// append the tail reward to the long-term return
 				stm.front().r_lt = stm.front().r_st + pow(TD_DISCOUNT, stm.size()) * r_tail;
@@ -467,8 +467,6 @@ public:
 		}
 
 #ifdef MT_ACTOR
-		// we have to finish the actor thread here, because the following code block may do a SGD update which
-		// will change nn.weight, on which the actor is depending
 #if !defined(__linux__) && !defined(__APPLE__)
 		// we have to finish the actor thread here, because the following code block may do a SGD update which
 		// will change nn.weight, on which the actor is depending

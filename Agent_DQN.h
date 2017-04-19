@@ -55,6 +55,7 @@ protected:
 	int50 NUM_WORKER;
 
 
+	using Agent<SIZE_PERCEPT, SIZE_ACTION>::stm;
 //// core data structures -------------------------
 //
 public:
@@ -190,7 +191,7 @@ public:
 #ifdef RPM_COMPRESSION
 	Queue<CompressedMemItem> rpm;
 #else
-	Queue<MemItem> rpm;
+	Queue<Agent<SIZE_PERCEPT, SIZE_ACTION>::MemItem> rpm;
 #endif
 	
     // buffer for the batch training data
@@ -334,7 +335,7 @@ public:
 			std::uniform_int_distribution<int50> rpm_sampler(0, rpm.size()-1);
 			int50 data_id = rpm_sampler(rng);
             
-            MemItem item;
+            typename Agent<SIZE_PERCEPT, SIZE_ACTION>::MemItem item;
             rpm[data_id].CopyToBuffer(batch_x[t], item.a, item.r_lt, item.step, item.r_st);           
             int50 action = vec_argmax(item.a, SIZE_ACTION);
             batch_action[t] = action;
@@ -413,7 +414,13 @@ public:
 		mt_action_x = (double*)x;
 		mt_action_a = a;
 		mt_action_done = false;
+
+#if !defined(__linux__) && !defined(__APPLE__)
 		_beginthread(MTActorMain, 0, this);
+#else
+		std::thread threadObj(MTActorMain, this);
+#endif
+
 #else 
         Act(a, x); 
 #endif
@@ -447,7 +454,7 @@ public:
 				r_tail = vec_max<double>(nn_target.output, SIZE_ACTION);
 			}
 		
-			while(stm.size() > stm_new_size)
+			while(Agent<SIZE_PERCEPT, SIZE_ACTION>::stm.size() > stm_new_size)
 			{
 				// append the tail reward to the long-term return
 				stm.front().r_lt = stm.front().r_st + pow(TD_DISCOUNT, stm.size()) * r_tail;
@@ -462,10 +469,17 @@ public:
 #ifdef MT_ACTOR
 		// we have to finish the actor thread here, because the following code block may do a SGD update which
 		// will change nn.weight, on which the actor is depending
+#if !defined(__linux__) && !defined(__APPLE__)
+		// we have to finish the actor thread here, because the following code block may do a SGD update which
+		// will change nn.weight, on which the actor is depending
 		while(mt_action_done == false) 
 		{
 			Sleep(0);
 		}
+#else
+
+		threadObj.join();
+#endif
 #endif
 		actor_timer.SuspendTiming();
 

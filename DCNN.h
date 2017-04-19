@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <process.h>
 #include <random>
 #include <queue>
 #include <vector>
@@ -22,6 +21,20 @@
 ///////////////////////////////////////////////////////
 
 
+#if defined(__linux__) || defined(__APPLE__)
+
+#include <chrono>
+#include <thread>
+
+inline void Sleep(int dwMilliseconds)
+{
+	std::chrono::milliseconds duration(dwMilliseconds);
+
+	std::this_thread::sleep_for(duration);
+}
+#else
+#include <process.h>
+#endif
 
 
 #define NTYPE_CONSTANT 0
@@ -913,7 +926,14 @@ public:
             mt_workspace[tid].learning_rate = learning_rate;
             mt_workspace[tid].batch_size = batch_size;
 			mt_workspace[tid].state = MT_BUSY_GRAD;
+
+#if !defined(__linux__) && !defined(__APPLE__)
 		    _beginthread(MTWorkerMain, 0, &(mt_workspace[tid]));
+#else
+		    std::thread threadObj(MTWorkerMain, &(mt_workspace[tid]));
+		    threadObj.detach();
+#endif
+			
 		}
 
         return true;

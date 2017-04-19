@@ -2,133 +2,144 @@
 #include "utils.h"
 #include "RL.h"
 #include "Agent_DQN.h"
-//#include "mnist.h"
-//#include "ALE.h"
-#include "tic_tac_toe.h"
 
+//select game type
+#define MNIST
+//#define TTT
+//#define ALE
+
+
+#if defined(MNIST)
+#include "mnist.h"
 // mnist_main
 
-//void mnist_main()
-//{
-//    // create the agent
-//    static const int50 batch_size = 32;
-//    int50 num_parallel_learner = 2;
-//    char* filename_weight = NULL;
-//	std::vector<DCNN_CONFIG> config;
-//
-//	// Foraging 10x10
-//	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	5,	0,  1,  0, 10, 10));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		10,	3,  1, -1, 10, 10));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		20, 3,  1,  0,  8,  8));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		40, 3,  1,  0,  6,  6));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		80, 3,  1,  0,  4,  4)); 
-//	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,	9,	4,  1,  0,  1,  1));
-//
-//	//// aDQN (4-way input)
-//	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	4,	0,	1,	0,	84,	84));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		16,	8,	4,	0,	20,	20));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		32,	4,	2,	0,	9,	9));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		256,9,	1,	0,	1,	1));
-//	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		SIZE_ACTION,	1,	1,	0,	1,	1));
-//
-//	//// DQN (4-way input)
-//	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	4,	0,	1,	0,	84,	84));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		32,	8,	4,	0,	20,	20));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		64,	4,	2,	0,	9,	9));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		64,	3,	1,	0,	7,	7));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		512,7,	1,	0,	1,	1));
-//	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		18,	1,	1,	0,	1,	1));
-//
-//	// MNIST
-//	config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	1,	0,  0,  0, 28, 28));
-//	config.push_back(DCNN_CONFIG(NTYPE_RELU,		8,	5,  1, -2, 28, 28));
-//	config.push_back(DCNN_CONFIG(NTYPE_RELU,		16, 3,  2, -1, 14, 14));
-//	config.push_back(DCNN_CONFIG(NTYPE_RELU,		32, 3,  2, -1,  7,  7));
-//	config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		10, 7,  1,  0,  1,  1));
-//
-//    Agent_DQN<SIZE_IMG, SIZE_LABEL> agent(config, filename_weight, batch_size, num_parallel_learner, 400, 60000, 0.1, 0.0);
-//
-//
-//    // create the envionment
-//    Environment_Mnist env(10);
-//
-//
-//    // do the experiment
-//    int50 nStep = -1; //120000;
-//    int50 step_reporting_cycle = -1; //100 * UPDATE_INTERVAL;
-//    int50 nEpisode = 120000;
-//    int50 episode_reporting_cycle = 100 * UPDATE_INTERVAL;
-//
-//    RL_Experiment(env, agent, nEpisode, episode_reporting_cycle);
-//
-//    return;
-//}
+void mnist_main()
+{
+    // create the agent
+    static const int50 batch_size = 32;
+    int50 num_parallel_learner = 2;
+    char* filename_weight = NULL;
+	std::vector<DCNN_CONFIG> config;
+
+	// Foraging 10x10
+	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	5,	0,  1,  0, 10, 10));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		10,	3,  1, -1, 10, 10));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		20, 3,  1,  0,  8,  8));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		40, 3,  1,  0,  6,  6));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		80, 3,  1,  0,  4,  4)); 
+	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,	9,	4,  1,  0,  1,  1));
+
+	//// aDQN (4-way input)
+	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	4,	0,	1,	0,	84,	84));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		16,	8,	4,	0,	20,	20));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		32,	4,	2,	0,	9,	9));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		256,9,	1,	0,	1,	1));
+	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		SIZE_ACTION,	1,	1,	0,	1,	1));
+
+	//// DQN (4-way input)
+	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	4,	0,	1,	0,	84,	84));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		32,	8,	4,	0,	20,	20));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		64,	4,	2,	0,	9,	9));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		64,	3,	1,	0,	7,	7));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		512,7,	1,	0,	1,	1));
+	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		18,	1,	1,	0,	1,	1));
+
+	// MNIST
+	config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	1,	0,  0,  0, 28, 28));
+	config.push_back(DCNN_CONFIG(NTYPE_RELU,		8,	5,  1, -2, 28, 28));
+	config.push_back(DCNN_CONFIG(NTYPE_RELU,		16, 3,  2, -1, 14, 14));
+	config.push_back(DCNN_CONFIG(NTYPE_RELU,		32, 3,  2, -1,  7,  7));
+	config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		10, 7,  1,  0,  1,  1));
+
+    Agent_DQN<SIZE_IMG, SIZE_LABEL> agent(config, filename_weight, batch_size, num_parallel_learner, 400, 60000, 0.1, 0.0);
+
+
+    // create the envionment
+    Environment_Mnist env(10);
+
+
+    // do the experiment
+    int50 nStep = -1; //120000;
+    int50 step_reporting_cycle = -1; //100 * UPDATE_INTERVAL;
+    int50 nEpisode = 120000;
+    int50 episode_reporting_cycle = 100 * UPDATE_INTERVAL;
+
+    RL_Experiment(env, agent, nEpisode, episode_reporting_cycle);
+
+    return;
+}
+
+#elif defined(ALE)
+
+#include "ALE.h"
 
 // ale_main
 
-//void ale_main()
-//{
-//    // create the agent
-//    static const int50 batch_size = 32;
-//    int50 num_parallel_learner = 16;
-//    char* filename_weight = NULL;
-//	std::vector<DCNN_CONFIG> config;
-//
-//	// Foraging 10x10
-//	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	5,	0,  1,  0, 10, 10));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		10,	3,  1, -1, 10, 10));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		20, 3,  1,  0,  8,  8));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		40, 3,  1,  0,  6,  6));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		80, 3,  1,  0,  4,  4)); 
-//	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,	9,	4,  1,  0,  1,  1));
-//
-//	// aDQN (4-way input)
-//	config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	HISTORY_LEN,	0,	1,	0,	84,	84));
-//	config.push_back(DCNN_CONFIG(NTYPE_RELU,		16,	8,	4,	0,	20,	20));
-//	config.push_back(DCNN_CONFIG(NTYPE_RELU,		32,	4,	2,	0,	9,	9));
-//	config.push_back(DCNN_CONFIG(NTYPE_RELU,		256,9,	1,	0,	1,	1));
-//	config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		SIZE_ACTION_SI,	1,	1,	0,	1,	1));
-//
-//	//// DQN (4-way input)
-//	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	4,	0,	1,	0,	84,	84));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		32,	8,	4,	0,	20,	20));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		64,	4,	2,	0,	9,	9));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		64,	3,	1,	0,	7,	7));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		512,7,	1,	0,	1,	1));
-//	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		18,	1,	1,	0,	1,	1));
-//
-//	//// MNIST
-//	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	1,	0,  0,  0, 28, 28));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		8,	5,  1, -2, 28, 28));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		16, 3,  2, -1, 14, 14));
-//	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		32, 3,  2, -1,  7,  7));
-//	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		10, 7,  1,  0,  1,  1));
-//
-//    //Agent_DQN<SIZE_PERCEPT_ALE, SIZE_ACTION_SI> agent_dqn(config, filename_weight, batch_size, num_parallel_learner, 5000, 100000, 1.0, 0.1);
-//    Agent_DQN<SIZE_PERCEPT_ALEW, SIZE_ACTION_SI> agent_dqn(config, filename_weight, batch_size, num_parallel_learner, 5000, 100000, 1.0, 0.1);
-//
-//
-//    // create the envionment
-//    Environment_ALE env("roms/space_invaders.bin", true);
-//
-//    // create the agent wrapper
-//    Agent_ALEWrapper agent(&agent_dqn);
-//
-//    // do the experiment
-//    int50 nStep = -1; //120000;
-//    int50 step_reporting_cycle = -1; //100 * UPDATE_INTERVAL;
-//    int50 nEpisode = 50000;
-//#ifdef SINGLE_LIFE_EPISODE
-//    int50 episode_reporting_cycle = 3;
-//#else
-//    int50 episode_reporting_cycle = 1;
-//#endif
-//    RL_Experiment(env, agent, nEpisode, episode_reporting_cycle);
-//
-//    return;
-//}
-//
+void ale_main()
+{
+    // create the agent
+    static const int50 batch_size = 32;
+    int50 num_parallel_learner = 16;
+    char* filename_weight = NULL;
+	std::vector<DCNN_CONFIG> config;
 
+	// Foraging 10x10
+	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	5,	0,  1,  0, 10, 10));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		10,	3,  1, -1, 10, 10));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		20, 3,  1,  0,  8,  8));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		40, 3,  1,  0,  6,  6));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		80, 3,  1,  0,  4,  4)); 
+	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,	9,	4,  1,  0,  1,  1));
+
+	// aDQN (4-way input)
+	config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	HISTORY_LEN,	0,	1,	0,	84,	84));
+	config.push_back(DCNN_CONFIG(NTYPE_RELU,		16,	8,	4,	0,	20,	20));
+	config.push_back(DCNN_CONFIG(NTYPE_RELU,		32,	4,	2,	0,	9,	9));
+	config.push_back(DCNN_CONFIG(NTYPE_RELU,		256,9,	1,	0,	1,	1));
+	config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		SIZE_ACTION_SI,	1,	1,	0,	1,	1));
+
+	//// DQN (4-way input)
+	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	4,	0,	1,	0,	84,	84));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		32,	8,	4,	0,	20,	20));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		64,	4,	2,	0,	9,	9));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		64,	3,	1,	0,	7,	7));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		512,7,	1,	0,	1,	1));
+	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		18,	1,	1,	0,	1,	1));
+
+	//// MNIST
+	//config.push_back(DCNN_CONFIG(NTYPE_CONSTANT,	1,	0,  0,  0, 28, 28));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		8,	5,  1, -2, 28, 28));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		16, 3,  2, -1, 14, 14));
+	//config.push_back(DCNN_CONFIG(NTYPE_RELU,		32, 3,  2, -1,  7,  7));
+	//config.push_back(DCNN_CONFIG(NTYPE_LINEAR,		10, 7,  1,  0,  1,  1));
+
+    //Agent_DQN<SIZE_PERCEPT_ALE, SIZE_ACTION_SI> agent_dqn(config, filename_weight, batch_size, num_parallel_learner, 5000, 100000, 1.0, 0.1);
+    Agent_DQN<SIZE_PERCEPT_ALEW, SIZE_ACTION_SI> agent_dqn(config, filename_weight, batch_size, num_parallel_learner, 5000, 100000, 1.0, 0.1);
+
+
+    // create the envionment
+    Environment_ALE env("roms/space_invaders.bin", true);
+
+    // create the agent wrapper
+    Agent_ALEWrapper agent(&agent_dqn);
+
+    // do the experiment
+    int50 nStep = -1; //120000;
+    int50 step_reporting_cycle = -1; //100 * UPDATE_INTERVAL;
+    int50 nEpisode = 50000;
+#ifdef SINGLE_LIFE_EPISODE
+    int50 episode_reporting_cycle = 3;
+#else
+    int50 episode_reporting_cycle = 1;
+#endif
+    RL_Experiment(env, agent, nEpisode, episode_reporting_cycle);
+
+    return;
+}
+
+#elif defined(TTT)
+
+#include "tic_tac_toe.h"
 
 // ttt_main
 
@@ -213,17 +224,22 @@ void ttt_main()
     return;
 }
 
+#endif // test type
 
 int main(int argc, char *argv[])
 {
-    //mnist_main();
-    //ale_main();
-    
+
+#if defined(MNIST)
+    mnist_main();
+#elif defined(ALE)
+    ale_main();
+#elif defined(TTT)
     ttt_main();
+
     Agent_TTTMinimax<3,3> agent_minimax;
     ttt_test<3,3>(&agent_minimax, BLACK);
 
-
+#endif
     return 0;
 }
 

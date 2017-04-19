@@ -4,9 +4,42 @@
 
 #include <stdio.h>
 #include <math.h>
+#if defined(__WIN32__)
 #include <windows.h>
-#include <assert.h>
 #include <process.h>
+#endif
+#include <assert.h>
+
+#if defined(__linux__) || defined(__APPLE__)
+#include <inttypes.h>
+#include <chrono>
+#include <thread>
+
+#define __int64 int64_t
+
+typedef std::chrono::high_resolution_clock::time_point LARGE_INTEGER;
+
+inline void QueryPerformanceCounter(std::chrono::high_resolution_clock::time_point *timepoint)
+{
+    *timepoint = std::chrono::high_resolution_clock::now();
+}
+
+double toMicroSeconds(LARGE_INTEGER endTime, LARGE_INTEGER startTime)
+{
+    return std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+}
+
+#else
+
+double toMicroSeconds(LARGE_INTEGER endTime, LARGE_INTEGER startTime, LARGE_INTEGER frequency)
+{
+    return (endTime.QuadPart - startTime.QuadPart)
+                    / (double) (frequency.QuadPart) * 1000000;
+}
+
+#endif
+
+
 
 
 /* USAGE:
@@ -47,10 +80,10 @@ public:
 	double delay_episode;
 
     // the name of this variable
-    char* name;
+    const char* name;
 
 public:
-    inline PerfVar(char* varName = NULL);
+    inline PerfVar(const char* varName = NULL);
 
     inline void     BeginTiming();   // this is used ONLY under single thread environment
     inline double   EndTiming();  // this is used ONLY under single thread environment
@@ -73,12 +106,13 @@ public:
 private:
     LARGE_INTEGER startTime;    // this is used ONLY under single thread environment
     LARGE_INTEGER endTime;      // this is used ONLY under single thread environment
-
+#if !defined(__linux__) && !defined(__APPLE__)
     LARGE_INTEGER frequency;    // the variable that records the hardware tick count frequency
+#endif
 };
 
 
-PerfVar::PerfVar(char* varName /*=NULL*/) 
+PerfVar::PerfVar(const char* varName /*=NULL*/) 
     : mean(0), 
       deviation(-1), 
       sum(0), 
@@ -88,10 +122,12 @@ PerfVar::PerfVar(char* varName /*=NULL*/)
       name(varName), 
       isTiming(false) 
 {
+
+#if !defined(__linux__) && !defined(__APPLE__)
     startTime.QuadPart = 0;
     endTime.QuadPart = 0;
-
     QueryPerformanceFrequency(&frequency);
+#endif
 }
 
 void PerfVar::BeginTiming() 
@@ -110,9 +146,13 @@ double PerfVar::SuspendTiming()
 
     QueryPerformanceCounter(&endTime);
 
+#if !defined(__linux__) && !defined(__APPLE__)
     delay_episode += (endTime.QuadPart - startTime.QuadPart)
                     / (double) (frequency.QuadPart) * 1000000;
-    
+#else
+
+    delay_episode += toMicroSeconds(endTime, startTime);
+#endif
     return delay_episode;
 }
 
@@ -131,8 +171,13 @@ double PerfVar::EndTiming()
 
     QueryPerformanceCounter(&endTime);
 
+#if !defined(__linux__) && !defined(__APPLE__)
     delay_episode += (endTime.QuadPart - startTime.QuadPart)
                     / (double) (frequency.QuadPart) * 1000000;
+
+#else
+    delay_episode += toMicroSeconds(endTime, startTime);
+#endif
     AddRecord(delay_episode);
 
     return delay_episode;
@@ -144,8 +189,12 @@ double PerfVar::CheckTime()
 
     QueryPerformanceCounter(&endTime);
 
+#if !defined(__linux__) && !defined(__APPLE__)
     double delay_segment = (endTime.QuadPart - startTime.QuadPart)
                     / (double) (frequency.QuadPart) * 1000000;
+#else
+    double delay_segment = toMicroSeconds(endTime, startTime);
+#endif
 
     return delay_episode + delay_segment;
 }
@@ -270,8 +319,6 @@ int PerfVar::Print(FILE* fp, bool auto_clean)
     return 0;
 }
 
-
-
 void __cdecl CPULoad(void* argv)
 {
 		double y = 0.0;
@@ -283,6 +330,7 @@ void __cdecl CPULoad(void* argv)
 			x = x+1.0;
 		}
 }
+
 void ThroughputTest(int thread_num =1)
 {
 	FILE* fp = fopen("cputest.txt", "w");
@@ -335,7 +383,12 @@ void ThroughputTest(int thread_num =1)
 		fflush(fp);
 		throughput.Clean();
 
+#if !defined(__linux__) && !defined(__APPLE__)
 		_beginthread(CPULoad, 0, NULL);
+#else
+        std::thread cpuThread(CPULoad, (void*)NULL);
+        cpuThread.detach();
+#endif
 	}
 }
 

@@ -1,4 +1,4 @@
-sudo: false
+sudo: required
 
 addons:
     apt:
@@ -12,8 +12,10 @@ addons:
             - gcc-5
             - cmake
             - cmake-data
-            
+
 script:
+  - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
+  - gcc --version
   - mkdir build
   - cd build
   - cmake .. -DCMAKE_BUILD_TYPE=debug

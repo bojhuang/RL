@@ -26,6 +26,10 @@ double toMicroSeconds(LARGE_INTEGER endTime, LARGE_INTEGER startTime)
     return std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
 }
 
+#if defined(__GNUC__)
+#define __cdecl
+#endif
+
 #else
 #include <windows.h>
 #include <process.h>
@@ -278,7 +282,7 @@ int PerfVar::Dump(const char* fileName, bool auto_clean)
         fprintf(fp, "%s \t ", name);
     }
 
-    fprintf(fp, "%.3lf \t %.3lf \t %.3lf \t %.3lf \t %.3lf \t %lld\n", 
+    fprintf(fp, "%.3lf \t %.3lf \t %.3lf \t %.3lf \t %.3lf \t %ld\n", 
         mean,
         deviation, 
         (number==0) ? 0 : max, 
@@ -306,7 +310,7 @@ int PerfVar::Print(FILE* fp, bool auto_clean)
         fprintf(fp, "%s \t ", name);
     }
 
-    fprintf(fp, "mean=%.3lf  dev.=%.3lf  max=%.3lf min=%.3lf total=%.3lf  number=%lld\n",
+    fprintf(fp, "mean=%.3lf  dev.=%.3lf  max=%.3lf min=%.3lf total=%.3lf  number=%ld\n",
         mean,
         deviation, 
         (number==0) ? 0 : max, 
@@ -333,7 +337,7 @@ void __cdecl CPULoad(void* argv)
 void ThroughputTest(int thread_num =1)
 {
 	FILE* fp = fopen("cputest.txt", "w");
-	fprintf(fp, "#thread \t throughput (st) \t throughput (mt) \t speedup(%)\n");
+	fprintf(fp, "#thread \t throughput (st) \t throughput (mt) \t speedup(%%)\n");
 	fflush(fp);
 
 	double throughput_st;

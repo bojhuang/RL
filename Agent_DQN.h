@@ -5,10 +5,6 @@
 #include "DCNN.h"
 #include "RL.h"
 
-
-
-
-
 template<int50 SIZE_PERCEPT, int50 SIZE_ACTION>
 class Agent_DQN: public Agent<SIZE_PERCEPT, SIZE_ACTION>
 {
@@ -475,7 +471,9 @@ public:
 			Sleep(0);
 		}
 #else
-
+		#if defined(__linux__) && defined(__GNUC__)
+		#define __cdecl
+		#endif
 		threadObj.join();
 #endif
 #endif

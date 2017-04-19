@@ -48,7 +48,7 @@ void DumpImage_MNIST_Training()
 	for(int t=0; t<num_image; t++)
 	{
 		file.read((char*)data, img_size);
-		printf("file %d, read %d bytes\n", t, file.gcount());
+		printf("file %d, read %ld bytes\n", t, file.gcount());
 		assert(file);
 
 		char filename[1000];
@@ -96,7 +96,7 @@ void DumpImage_MNIST_Testing()
 	for(int t=0; t<num_image; t++)
 	{
 		file.read((char*)data, img_size);
-		printf("file %d, read %d bytes\n", t, file.gcount());
+		printf("file %d, read %ld bytes\n", t, file.gcount());
 		assert(file);
 
 		char filename[1000];
@@ -353,7 +353,7 @@ public:
                     fprintf(fp, "step #%lld \t img=%lld \t label=%lld \t output=%lld \t %s\n", timestamp-(log.size()-1)+i, log[i].data_id, log[i].label, log[i].action, (log[i].label==log[i].action)?"same":"diff");
                 }
             }
-            fprintf(fp, "accuracy in the last %lld steps  = %.2lf%%\n\n", log.size()-1, nCorrect/(double)(log.size()-1)*100);
+            fprintf(fp, "accuracy in the last %ld steps  = %.2lf%%\n\n", log.size()-1, nCorrect/(double)(log.size()-1)*100);
         }
         else assert(0);  
     }
@@ -383,8 +383,8 @@ void mnist_test()
     // create the neural network
     DCNN<SIZE_IMG, SIZE_LABEL> nn(num_parallel_learner);
 	nn.Setup(config);
-	if(nn.size_output != SIZE_LABEL) {printf("I/O mismatch: \t %lld \t %lld\n", nn.size_output, SIZE_LABEL); getchar();}
-	if(nn.size_input != SIZE_IMG) {printf("I/O mismatch: \t %lld \t %lld\n", nn.size_input, SIZE_IMG); getchar();}
+	if(nn.size_output != SIZE_LABEL) {printf("I/O mismatch: \t %lld \t %d\n", nn.size_output, SIZE_LABEL); getchar();}
+	if(nn.size_input != SIZE_IMG) {printf("I/O mismatch: \t %lld \t %d\n", nn.size_input, SIZE_IMG); getchar();}
 
 	// initialize the weights
 	if(filename_weight != NULL)

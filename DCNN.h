@@ -1225,10 +1225,10 @@ public:
 				PrintFilters_BP(l, config[l].L_FC/2, config[l].W_FC/2, h);
 
 				double b_min = neuron[0].b;
-				for(int50 i=0; i<idx_neuron[1]; i++) b_min = min(b_min, neuron[i].b);
+				for(int50 i=0; i<idx_neuron[1]; i++) b_min = std::min(b_min, neuron[i].b);
 
 				double b_max = neuron[0].b;
-				for(int50 i=0; i<idx_neuron[1]; i++) b_max = max(b_max, neuron[i].b);
+				for(int50 i=0; i<idx_neuron[1]; i++) b_max = std::max(b_max, neuron[i].b);
 
 				for(int50 i=0; i<size_input; i++)
 				{

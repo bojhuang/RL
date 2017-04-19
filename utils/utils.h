@@ -182,7 +182,7 @@ public:
     FILE* fp;
 
 public:
-    FileSynchronizer(char* filename_str)
+    FileSynchronizer(const char* filename_str)
         : filename(filename_str), fp(NULL)
     {
         fp = fopen(filename.c_str(), "r");   
@@ -229,7 +229,7 @@ class Queue
 protected:
 	int50 s;
 	_T* item;
-	void* mem;
+	char* mem;
 	int50 h;
 	int50 t;
 	int50 CAPACITY;

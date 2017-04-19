@@ -17,9 +17,12 @@
 
 #define IN_ const
 #define OUT_ 
+
+#if !defined(__linux__) && !defined(__APPLE__)
 #define not false ==
 #define and &&
 #define or ||
+#endif
 
 
 // a signed integer with 50 content bits (excluding the sign bit);

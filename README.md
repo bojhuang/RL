@@ -1,4 +1,7 @@
 
+Current Linux build status:
+[![Build Status](https://travis-ci.org/shi-yan/RL.svg?branch=master)](https://travis-ci.org/shi-yan/RL)
+
 How to build:
 
 On Linux

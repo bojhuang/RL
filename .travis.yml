@@ -1,10 +1,9 @@
-before_install:
-    - sudo apt-get update
-    - sudo apt-get install cmake
+sudo: false
+
+install: make get-deps cmake
 
 script:
   - mkdir build
   - cd build
   - cmake .. -DCMAKE_BUILD_TYPE=debug
   - make
-  

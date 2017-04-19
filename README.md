@@ -15,7 +15,7 @@ mkdir build
 cd build
 cmake ..
 make
-./RL_main
+./RL_demo
 
 ```
 
@@ -34,6 +34,6 @@ mkdir build
 cd build
 cmake ..
 make
-./RL_main
+./RL_demo
 
 ```

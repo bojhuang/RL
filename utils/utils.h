@@ -31,6 +31,13 @@
 // takes 8 bytes in physical memory
 typedef long long int50;  
 
+#ifndef max2
+#define max2(a,b)            (((a) > (b)) ? (a) : (b))
+#endif
+
+#ifndef min2
+#define min2(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
 
 
 template<typename T>
@@ -94,10 +101,10 @@ double vec_avg(const double* x, int50 n)
 
 double vec_norm_Lmax(const double* x, int50 n)
 {
-    double x_max = abs(x[0]);
+    double x_max = fabs(x[0]);
 	for(int50 i=1; i<n; i++)
 	{
-        double x_i = abs(x[i]);
+        double x_i = fabs(x[i]);
         x_max = (x_i > x_max) ? x_i : x_max;
 	}
 	return x_max;    
@@ -108,7 +115,7 @@ double vec_norm_L0(const double* x, int50 n, double threshold =0)
     double cnt = 0;
 	for(int50 i=1; i<n; i++)
 	{
-        cnt += (abs(x[i]) <= threshold) ? 0 : 1;
+        cnt += (fabs(x[i]) <= threshold) ? 0 : 1;
 	}
 	return cnt;    
 }
@@ -118,7 +125,7 @@ double vec_norm_L1(const double* x, int50 n)
 	double norm_l1 = 0.0;
 	for(int50 i=0; i<n; i++)
 	{
-		norm_l1 += abs(x[i]);
+		norm_l1 += fabs(x[i]);
 	}
 	return norm_l1;
 }
@@ -133,7 +140,7 @@ double vec_dist_L1(const double* x, const double* y, int50 n)
 	double dist_l1 = 0.0;
 	for(int50 i=0; i<n; i++)
 	{
-		dist_l1 += abs(x[i]-y[i]);
+		dist_l1 += fabs(x[i]-y[i]);
 	}
 	return dist_l1;
 }
@@ -229,7 +236,7 @@ class Queue
 protected:
 	int50 s;
 	_T* item;
-	void* mem;
+	char* mem;
 	int50 h;
 	int50 t;
 	int50 CAPACITY;

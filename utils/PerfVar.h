@@ -12,7 +12,7 @@
 #include <chrono>
 #include <thread>
 
-#define __int64 int64_t
+#define __int64 long long
 
 typedef std::chrono::high_resolution_clock::time_point LARGE_INTEGER;
 
@@ -23,7 +23,7 @@ inline void QueryPerformanceCounter(std::chrono::high_resolution_clock::time_poi
 
 double toMicroSeconds(LARGE_INTEGER endTime, LARGE_INTEGER startTime)
 {
-    return std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+    return std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
 }
 
 #else
@@ -69,7 +69,7 @@ public:
     double mean;        // in micro-second
     double deviation;   // in micro-second
     double sum;         // in micro-second
-    __int64 number;
+    long long number;
     double max;
     double min;
 
@@ -93,8 +93,8 @@ public:
     // when multi-thread enabled, more than one timing process can be performed concurrently.
     // so, for each timing thread, it has to store time stamps in its own TLS, and report the 
     // recorded time delay by AddRecord().
-    inline __int64	AddRecord(double recorded_delay);
-    inline __int64  Merge(const PerfVar& pv);
+    inline long long	AddRecord(double recorded_delay);
+    inline long long    Merge(const PerfVar& pv);
 
     inline int Clean();
     inline int Settle();
@@ -198,7 +198,7 @@ double PerfVar::CheckTime()
     return delay_episode + delay_segment;
 }
 
-__int64 PerfVar::AddRecord(double delay) 
+long long PerfVar::AddRecord(double delay) 
 {
     sum += delay;
     sum_square += delay * delay;
@@ -208,7 +208,7 @@ __int64 PerfVar::AddRecord(double delay)
     return number;
 }
 
-__int64 PerfVar::Merge(const PerfVar& pv) 
+long long PerfVar::Merge(const PerfVar& pv) 
 {
     sum += pv.sum;
     sum_square += pv.sum_square;
@@ -318,7 +318,7 @@ int PerfVar::Print(FILE* fp, bool auto_clean)
     return 0;
 }
 
-void __cdecl CPULoad(void* argv)
+void CPULoad(void* argv)
 {
 		double y = 0.0;
 		double x = 1.0;
@@ -333,7 +333,7 @@ void __cdecl CPULoad(void* argv)
 void ThroughputTest(int thread_num =1)
 {
 	FILE* fp = fopen("cputest.txt", "w");
-	fprintf(fp, "#thread \t throughput (st) \t throughput (mt) \t speedup(%)\n");
+	fprintf(fp, "#thread \t throughput (st) \t throughput (mt) \t speedup(%%)\n");
 	fflush(fp);
 
 	double throughput_st;

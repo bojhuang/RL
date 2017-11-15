@@ -124,8 +124,8 @@ public:
             int50 row_last = I(last_move);
             int50 col_last = J(last_move);
 
-            int50 row_min = max(0, row_last - WINNING_CHAIN_SIZE +1);
-            int50 row_max = min(row_last +WINNING_CHAIN_SIZE, BOARD_SIZE) -WINNING_CHAIN_SIZE;
+            int50 row_min = max2(0, row_last - WINNING_CHAIN_SIZE +1);
+            int50 row_max = min2(row_last +WINNING_CHAIN_SIZE, BOARD_SIZE) -WINNING_CHAIN_SIZE;
             for(int50 r = row_min; r<= row_max; r++)
             {
                 int50 cnt=0;
@@ -137,8 +137,8 @@ public:
                 }
             }
 
-            int50 col_min = max(0, col_last - WINNING_CHAIN_SIZE +1);
-            int50 col_max = min(col_last +WINNING_CHAIN_SIZE, BOARD_SIZE) -WINNING_CHAIN_SIZE;
+            int50 col_min = max2(0, col_last - WINNING_CHAIN_SIZE +1);
+            int50 col_max = min2(col_last +WINNING_CHAIN_SIZE, BOARD_SIZE) -WINNING_CHAIN_SIZE;
             for(int50 c = col_min; c<= col_max; c++)
             {
                 int50 cnt=0;

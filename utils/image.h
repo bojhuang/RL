@@ -14,7 +14,7 @@
 
 
 
-bool Mat2BMP(unsigned char* x, int row, int column, char* filename)
+bool Mat2BMP(unsigned char* x, int row, int column, const char* filename)
 {
 	BMP img;
 	img.SetSize(column,row);
@@ -32,7 +32,7 @@ bool Mat2BMP(unsigned char* x, int row, int column, char* filename)
 	return img.WriteToFile(filename);
 }
 
-bool BMP2Mat(unsigned char* x, int row, int column, char* filename)
+bool BMP2Mat(unsigned char* x, int row, int column, const char* filename)
 {
 	BMP img;
 	img.SetSize(column,row);

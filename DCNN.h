@@ -1011,7 +1011,7 @@ protected:
 	// Worker[0] is further responsible to aggregate the partial gradients into a delta vector;
 	//  to avoid any multi-threading synchronization overhead, worker[0] only computes a weight-delta vector and stores it 
 	//  in the delta vector of the Global NN (in 'nn.delta'), and the weight vector needs to be updated somewhere else in order to complete the SGD update.
-	static void __cdecl MTWorkerMain(void* pArgv)
+	static void MTWorkerMain(void* pArgv)
 	{
 		DCNNMTPackage* pWorkspace = (DCNNMTPackage*)pArgv;
         DCNN* self = pWorkspace->self;
@@ -1038,7 +1038,7 @@ protected:
 			//int50 action_now = vec_argmax<double>(nn_output, SIZE_ACTION);
 			//double r_rpm = self->rpm[data_id].r_lt;
 			//double r_nn = nn_output[action_rpm];
-			//double loss_l1 = abs(r_rpm - r_nn);
+			//double loss_l1 = fabs(r_rpm - r_nn);
 			//self->worker[tid].mt_loss_sum += loss_l1;
 			//self->worker[tid].mt_action_diff_sum += (action_rpm == action_now) ? 1 : 0;
             
@@ -1137,7 +1137,7 @@ public:
 			//printf("%lld \t %e \t %e\n", id, delta[id], pd);
 			weight[id] += step;
 
-			if(pd > 1e-300 && abs(delta[id] - pd)/pd > 0.1) 
+			if(pd > 1e-300 && fabs(delta[id] - pd)/pd > 0.1) 
 			{
 				printf("found difference in gradient. id=%lld \t delta=%e \t pd=%e \n", id, delta[id], pd);
 				//getchar();
@@ -1225,10 +1225,10 @@ public:
 				PrintFilters_BP(l, config[l].L_FC/2, config[l].W_FC/2, h);
 
 				double b_min = neuron[0].b;
-				for(int50 i=0; i<idx_neuron[1]; i++) b_min = min(b_min, neuron[i].b);
+				for(int50 i=0; i<idx_neuron[1]; i++) b_min = min2(b_min, neuron[i].b);
 
 				double b_max = neuron[0].b;
-				for(int50 i=0; i<idx_neuron[1]; i++) b_max = max(b_max, neuron[i].b);
+				for(int50 i=0; i<idx_neuron[1]; i++) b_max = max2(b_max, neuron[i].b);
 
 				for(int50 i=0; i<size_input; i++)
 				{

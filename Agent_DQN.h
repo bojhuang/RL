@@ -500,7 +500,7 @@ public:
 
 
 public:
-	static void __cdecl MTActorMain(void* pArgv)
+	static void MTActorMain(void* pArgv)
 	{
 		//SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
 		Agent_DQN<SIZE_PERCEPT,SIZE_ACTION>* self = (Agent_DQN<SIZE_PERCEPT,SIZE_ACTION>*)pArgv;
@@ -584,7 +584,7 @@ public:
 		//	int50 action_now = vec_argmax<double>(nn_output, SIZE_ACTION);
 		//	double r_rpm = self->rpm[data_id].r_lt;
 		//	double r_nn = nn_output[action_rpm];
-		//	double loss_l1 = abs(r_rpm - r_nn);
+		//	double loss_l1 = fabs(r_rpm - r_nn);
 		//	self->worker[tid].mt_loss_sum += loss_l1;
 		//	self->worker[tid].mt_action_diff_sum += (action_rpm == action_now) ? 1 : 0;
         //
